@@ -7,10 +7,12 @@ let width = c.width;
 let handleft ={
   currentX: 170,
   currentY: 335,
+  targetY: 325,
 }
 let handright ={
   currentX: 539,
   currentY: 335,
+  targetY: 325,
 }
 
 let eyeleft = {
@@ -32,44 +34,29 @@ let nut = {
   buttonY: 240,
 };
 
+// Tọa độ click chuột
+let clickX = null;
+let clickY = null;
+
 document.addEventListener("click", (e) => {
-  const clickX = e.clientX;
-  const clickY = e.clientY;
-  moveHand(handleft, clickX, clickY);
-  moveHand(handright, clickX, clickY);
+  clickX = e.clientX;
+  clickY = e.clientY;
+  drawLaser(eyeleft.currentX, eyeleft.currentY, clickX, clickY);
+  drawLaser(eyeright.currentX, eyeright.currentY, clickX, clickY);
 });
-// function moveHand(hand, targetX, targetY) {
-//   const dx = targetX - (hand.currentX + 170);
-//   const dy = targetY - (hand.currentY + 335);
-//   const distance = Math.sqrt(dx * dx + dy * dy);
-//   const speed = 200; // Tốc độ di chuyển của tay Baymax
 
-//   if (distance > speed) {
-//     hand.currentX += (dx / distance) * speed;
-//     hand.currentY += (dy / distance) * speed;
-//   } else {
-//     // Đến điểm click rồi thì giữ nguyên tại vị trí đó
-//     hand.currentX = targetX - 170;
-//     hand.currentY = targetY - 335;
-//   } 
-
-function moveHand(hand, targetX, targetY) {
-  const dx = targetX - hand.currentX;
-  const dy = targetY - hand.currentY;
-  const distance = Math.sqrt(dx * dx + dy * dy);
-  const speed = 1000; // Tốc độ di chuyển của tay Baymax
-
-  if (distance > speed) {
-    hand.currentX += (dx / distance) * speed;
-    hand.currentY += (dy / distance) * speed;
-  } else {
-    // Đến điểm click rồi thì giữ nguyên tại vị trí đó
-    hand.currentX = targetX;
-    hand.currentY = targetY;
-  }
+function drawLaser(startX, startY, endX, endY) {
+  ctx.beginPath();
+  ctx.moveTo(startX, startY);
+  ctx.lineTo(endX, endY);
+  ctx.strokeStyle = "red"; //
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.closePath();
 }
-//mà nếu t chạy 2 tay ngang thì sao ta này chạy 2 tay thì nó bị tật rồi
-let fps = 100;
+
+
+let fps = 30;
 let fpsInterval = 1000 / fps;
 let then = Date.now();
 let delta = 0;
@@ -84,7 +71,7 @@ document.addEventListener("mousemove", (e1) => {
   eyeright.targetY = e1.clientY;
   console.log(e1);
 });
-// nó vẫn đi theo click nhưng target Y lạ quá
+
 function baymax() {
   setInterval(() => {
     delta = Date.now() - then;
@@ -202,6 +189,14 @@ function baymax() {
     ctx.fill();
     ctx.closePath();
 
+    // // Vẽ miệng (hình U ngược)
+    // ctx.beginPath();
+    // ctx.moveTo(80, 135);
+    // ctx.quadraticCurveTo(100, 145, 120, 135);
+    // ctx.strokeStyle = "black";
+    // ctx.lineWidth = 5;
+    // ctx.stroke();
+
     // Vẽ nút trên ngực
     let buttonRadius = 15; // Kích thước ban đầu của nút
     ctx.beginPath();
@@ -210,6 +205,14 @@ function baymax() {
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
+
+    // // Vẽ vạch đen ở giữa thân
+    // ctx.beginPath();
+    // ctx.moveTo(290, 280);
+    // ctx.lineTo(410, 280);
+    // ctx.strokeStyle = "black";
+    // ctx.lineWidth = 4;
+    // ctx.stroke();
 
     // Vẽ dải đen giữa mắt
     ctx.beginPath();
