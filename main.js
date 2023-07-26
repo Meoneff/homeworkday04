@@ -35,7 +35,7 @@ let nut = {
 document.addEventListener("click", (e) => {
   const clickX = e.clientX;
   const clickY = e.clientY;
-  moveHand(handleft, clickX, clickY);
+  // moveHand(handleft, clickX, clickY);
   moveHand(handright, clickX, clickY);
 });
 // function moveHand(hand, targetX, targetY) {
